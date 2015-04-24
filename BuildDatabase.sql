@@ -1,3 +1,4 @@
+//The first time you will not DROP the database because it doesn't exist, but every time after you will have to.
 DROP DATABASE Datastellar;
 
 CREATE DATABASE Datastellar;
