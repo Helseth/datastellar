@@ -3,6 +3,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 public class Database{
 	
 	static final String url = "jdbc:mysql://localhost:3306/datastellar";
@@ -18,6 +21,8 @@ public class Database{
 	public static void main(String[] args){
 		Connection conn = null;
 		//Statement stmt = null;
+		
+		
 		Scanner in = new Scanner(System.in);
 		int input = 0;
 		try {
@@ -29,6 +34,7 @@ public class Database{
 			System.out.println("Problem with opening Connection");
 			ex.printStackTrace();
 		}
+		MainWindow window = new MainWindow(conn);
 		do{
 			System.out.println("Enter a command: \n" + 
 		"1: Insert a value into a table\n" + "2: Update a value in a table\n" +
