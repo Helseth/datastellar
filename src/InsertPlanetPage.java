@@ -116,6 +116,13 @@ public class InsertPlanetPage {
 		submit.setText("Submit");
 		submit.pack();
 		submit.setLayoutData(updateGD);
+		
+		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		Button refresh = new Button(planetInsertPage, SWT.PUSH);
+		updateGD.horizontalSpan = 1;
+		refresh.setText("Refresh");
+		refresh.pack();
+		refresh.setLayoutData(updateGD);
 
 		try {
 			PreparedStatement getStarNames = conn
@@ -232,6 +239,45 @@ public class InsertPlanetPage {
 					}
 				}
 
+			}
+		});
+		
+		refresh.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				try {
+					PreparedStatement getStarNames = conn
+							.prepareStatement("SELECT DISTINCT name FROM star;");
+					getStarNames.execute();
+					ResultSet rs = getStarNames.getResultSet();
+					ResultSetMetaData rsmd = rs.getMetaData();
+
+					PreparedStatement getGalaxyNames = conn
+							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					getGalaxyNames.execute();
+					
+					starSelect.removeAll();
+					while (rs.next()) {
+						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+							String columnValue = rs.getString(i);
+							starSelect.add(WordUtils.capitalize(columnValue));
+						}
+					}
+
+					rs = getGalaxyNames.getResultSet();
+					rsmd = rs.getMetaData();
+					
+					galaxySelect.removeAll();
+					while (rs.next()) {
+						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+							String columnValue = rs.getString(i);
+							galaxySelect.add(WordUtils.capitalize(columnValue));
+						}
+					}
+
+				} catch (SQLException e) {
+					System.out.println("SQL Error");
+					e.printStackTrace();
+				}
 			}
 		});
 

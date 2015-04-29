@@ -24,69 +24,76 @@ public class InsertStarPage {
 		Composite starInsertPage = new Composite(parent, SWT.NONE);
 		// planetInsertPage.setBackground(new Color(Display.getCurrent(), 255,
 		// 0, 0));
-		GridLayout updateGL = new GridLayout(4, true);
+		GridLayout insertGL = new GridLayout(4, true);
 
-		GridData updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		GridData insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 
 		Label name = new Label(starInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		name.setText("Name:");
-		name.setLayoutData(updateGD);
+		name.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text nameBox = new Text(starInsertPage, SWT.NONE);
-		nameBox.setLayoutData(updateGD);
+		nameBox.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label mass = new Label(starInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		mass.setText("Mass:");
-		mass.setLayoutData(updateGD);
+		mass.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text massBox = new Text(starInsertPage, SWT.NONE);
-		massBox.setLayoutData(updateGD);
+		massBox.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label classText = new Label(starInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		classText.setText("Class:");
-		classText.setLayoutData(updateGD);
+		classText.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text classBox = new Text(starInsertPage, SWT.NONE);
-		classBox.setLayoutData(updateGD);
+		classBox.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label inGalaxy = new Label(starInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		inGalaxy.setText("In Galaxy:");
-		inGalaxy.setLayoutData(updateGD);
+		inGalaxy.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
 		Combo galaxySelect = new Combo(starInsertPage, SWT.DROP_DOWN
 				| SWT.READ_ONLY);
-		updateGD.horizontalSpan = 2;
-		galaxySelect.setLayoutData(updateGD);
+		insertGD.horizontalSpan = 2;
+		galaxySelect.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label errorText = new Label(starInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		errorText.setText("");
-		errorText.setLayoutData(updateGD);
+		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
 		errorText.setForeground(Display.getCurrent().getSystemColor(
 				SWT.COLOR_RED));
 
-		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(starInsertPage, SWT.PUSH);
-		updateGD.horizontalSpan = 1;
+		insertGD.horizontalSpan = 1;
 		submit.setText("Submit");
 		submit.pack();
-		submit.setLayoutData(updateGD);
+		submit.setLayoutData(insertGD);
+		
+		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		Button refresh = new Button(starInsertPage, SWT.PUSH);
+		insertGD.horizontalSpan = 1;
+		refresh.setText("Refresh");
+		refresh.pack();
+		refresh.setLayoutData(insertGD);
 
 		try {
 
@@ -155,14 +162,43 @@ public class InsertStarPage {
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						if(e.getMessage().contains("Duplicate")){
+							errorText.setText("Entry already exists in database.");
+							errorText.setVisible(true);
+						}
 					}
 				}
 
 			}
 		});
+		
+		refresh.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				try {
+					PreparedStatement getGalaxyNames = conn
+							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					getGalaxyNames.execute();
+					
+					ResultSet rs = getGalaxyNames.getResultSet();
+					ResultSetMetaData rsmd = rs.getMetaData();
+					
+					
+					galaxySelect.removeAll();
+					while (rs.next()) {
+						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+							String columnValue = rs.getString(i);
+							galaxySelect.add(WordUtils.capitalize(columnValue));
+						}
+					}
 
-		starInsertPage.setLayout(updateGL);
+				} catch (SQLException e) {
+					System.out.println("SQL Error");
+					e.printStackTrace();
+				}
+			}
+		});
+
+		starInsertPage.setLayout(insertGL);
 		return starInsertPage;
 	}
 }

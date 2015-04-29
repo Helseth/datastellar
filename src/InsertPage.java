@@ -62,6 +62,8 @@ public class InsertPage {
 
 		Composite planetPage = InsertPlanetPage.createPlanetPage(sharedComposite, conn);
 		Composite starPage = InsertStarPage.createStarPage(sharedComposite, conn);
+		Composite galaxyPage = InsertGalaxyPage.createGalaxyPage(sharedComposite, conn);
+		Composite moonPage = InsertMoonPage.createMoonPage(sharedComposite, conn);
 
 		insertTableSelect.addListener(SWT.Selection, new Listener() {
 			@Override
@@ -72,6 +74,14 @@ public class InsertPage {
 				}
 				if (insertTableSelect.getText().equalsIgnoreCase("Star")) {
 					sl.topControl = starPage;
+					sharedComposite.layout();
+				}
+				if (insertTableSelect.getText().equalsIgnoreCase("Galaxy")) {
+					sl.topControl = galaxyPage;
+					sharedComposite.layout();
+				}
+				if (insertTableSelect.getText().equalsIgnoreCase("Moon")) {
+					sl.topControl = moonPage;
 					sharedComposite.layout();
 				}
 			}
