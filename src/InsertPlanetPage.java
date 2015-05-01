@@ -24,105 +24,110 @@ public class InsertPlanetPage {
 		Composite planetInsertPage = new Composite(parent, SWT.NONE);
 		// planetInsertPage.setBackground(new Color(Display.getCurrent(), 255,
 		// 0, 0));
-		GridLayout updateGL = new GridLayout(4, true);
+		GridLayout insertGL = new GridLayout(4, true);
 
-		GridData updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		GridData insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 
 		Label name = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		name.setText("Name:");
-		name.setLayoutData(updateGD);
+		name.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text nameBox = new Text(planetInsertPage, SWT.NONE);
-		nameBox.setLayoutData(updateGD);
+		nameBox.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label mass = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		mass.setText("Mass:");
-		mass.setLayoutData(updateGD);
+		mass.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text massBox = new Text(planetInsertPage, SWT.NONE);
-		massBox.setLayoutData(updateGD);
+		massBox.setLayoutData(insertGD);
+		
+		Label massUnit = new Label(planetInsertPage, SWT.FILL);
+		insertGD.horizontalSpan = 1;
+		massUnit.setText("kg");
+		massUnit.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label starOrbit = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		starOrbit.setText("Orbits Star:");
-		starOrbit.setLayoutData(updateGD);
+		starOrbit.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
 		Combo starSelect = new Combo(planetInsertPage, SWT.DROP_DOWN
 				| SWT.READ_ONLY);
-		updateGD.horizontalSpan = 2;
-		starSelect.setLayoutData(updateGD);
+		insertGD.horizontalSpan = 2;
+		starSelect.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label orbitalPeriod = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		orbitalPeriod.setText("Orbital Period:");
-		orbitalPeriod.setLayoutData(updateGD);
+		orbitalPeriod.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text periodBox = new Text(planetInsertPage, SWT.NONE);
-		periodBox.setLayoutData(updateGD);
+		periodBox.setLayoutData(insertGD);
 		
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label orbitalDays = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 1;
+		insertGD.horizontalSpan = 1;
 		orbitalDays.setText("Earth days");
-		orbitalDays.setLayoutData(updateGD);
+		orbitalDays.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label population = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		population.setText("Population:");
-		population.setLayoutData(updateGD);
+		population.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateGD.horizontalSpan = 1;
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD.horizontalSpan = 1;
 		Text popBox = new Text(planetInsertPage, SWT.NONE);
-		popBox.setLayoutData(updateGD);
+		popBox.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label inGalaxy = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		inGalaxy.setText("In Galaxy:");
-		inGalaxy.setLayoutData(updateGD);
+		inGalaxy.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
 		Combo galaxySelect = new Combo(planetInsertPage, SWT.DROP_DOWN
 				| SWT.READ_ONLY);
-		updateGD.horizontalSpan = 2;
-		galaxySelect.setLayoutData(updateGD);
+		insertGD.horizontalSpan = 2;
+		galaxySelect.setLayoutData(insertGD);
 
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label errorText = new Label(planetInsertPage, SWT.FILL);
-		updateGD.horizontalSpan = 4;
+		insertGD.horizontalSpan = 4;
 		errorText.setText("");
-		errorText.setLayoutData(updateGD);
+		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
 		errorText.setForeground(Display.getCurrent().getSystemColor(
 				SWT.COLOR_RED));
 
-		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(planetInsertPage, SWT.PUSH);
-		updateGD.horizontalSpan = 1;
+		insertGD.horizontalSpan = 1;
 		submit.setText("Submit");
 		submit.pack();
-		submit.setLayoutData(updateGD);
+		submit.setLayoutData(insertGD);
 		
-		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button refresh = new Button(planetInsertPage, SWT.PUSH);
-		updateGD.horizontalSpan = 1;
+		insertGD.horizontalSpan = 1;
 		refresh.setText("Refresh");
 		refresh.pack();
-		refresh.setLayoutData(updateGD);
+		refresh.setLayoutData(insertGD);
 
 		try {
 			PreparedStatement getStarNames = conn
@@ -197,9 +202,8 @@ public class InsertPlanetPage {
 					error = true;
 				}
 				if (NumberUtils.isNumber(popBox.getText())) {
-					if (Integer.parseInt(popBox.getText()) < 0) {
-						errorText
-								.setText("Population must be a non-negative value.");
+					if (Long.parseLong(popBox.getText()) < 0) {
+						errorText.setText("Population must be a non-negative value.");
 						errorText.setVisible(true);
 						error = true;
 					}
@@ -216,15 +220,10 @@ public class InsertPlanetPage {
 					error = true;
 				}
 				if (!error) {
-					System.out.println("INSERT INTO Planet VALUE(\""
-							+ nameBox.getText() + "," + massBox.getText()
-							+ ",\"" + starSelect.getText() + "\","
-							+ periodBox.getText() + "," + popBox.getText()
-							+ ",\"" + galaxySelect.getText() + "\")");
 					try {
 						PreparedStatement insertNewPlanet = conn
 								.prepareStatement("INSERT INTO Planet VALUE(\""
-										+ nameBox.getText() + "\","
+										+ WordUtils.capitalize(nameBox.getText()) + "\","
 										+ massBox.getText() + ",\""
 										+ starSelect.getText() + "\","
 										+ periodBox.getText() + ","
@@ -281,7 +280,7 @@ public class InsertPlanetPage {
 			}
 		});
 
-		planetInsertPage.setLayout(updateGL);
+		planetInsertPage.setLayout(insertGL);
 		return planetInsertPage;
 	}
 }

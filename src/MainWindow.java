@@ -1,6 +1,5 @@
 import java.sql.*;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
@@ -45,7 +44,7 @@ public class MainWindow {
 
 		// Selected composite
 		Composite insertPage = InsertPage.createInsertPage(sharedComposite, conn);
-		Composite updatePage = createUpdatePage(sharedComposite, conn);
+		Composite updatePage = UpdatePage.createUpdatePage(sharedComposite, conn);
 		shell.setLayout(gl);
 
 		shell.setSize(shell.getSize().x / 2, shell.getSize().y);
@@ -74,43 +73,4 @@ public class MainWindow {
 		System.exit(0);
 	}
 
-	public Composite createUpdatePage(Composite parent, Connection conn) {
-
-		Composite updatePage = new Composite(parent, SWT.NONE);
-		GridLayout updateGL = new GridLayout(4, true);
-
-		GridData updateGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		Label tableUpdateName = new Label(updatePage, SWT.NONE);
-		updateGD.horizontalSpan = 4;
-		tableUpdateName.setText("Select a table to update:");
-		tableUpdateName.setLayoutData(updateGD);
-
-		updateGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
-		Combo insertTableSelect = new Combo(updatePage, SWT.DROP_DOWN
-				| SWT.READ_ONLY);
-		updateGD.horizontalSpan = 2;
-		insertTableSelect.setLayoutData(updateGD);
-
-		try {
-			PreparedStatement getTableNames = conn
-					.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema='datastellar';");
-			getTableNames.execute();
-			ResultSet rs = getTableNames.getResultSet();
-			ResultSetMetaData rsmd = rs.getMetaData();
-
-			while (rs.next()) {
-				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-					String columnValue = rs.getString(i);
-					insertTableSelect.add(WordUtils.capitalize(columnValue));
-				}
-			}
-
-		} catch (SQLException e) {
-			System.out.println("SQL Error");
-			e.printStackTrace();
-		}
-
-		updatePage.setLayout(updateGL);
-		return updatePage;
-	}
 }

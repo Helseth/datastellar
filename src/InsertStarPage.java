@@ -48,6 +48,11 @@ public class InsertStarPage {
 		insertGD.horizontalSpan = 1;
 		Text massBox = new Text(starInsertPage, SWT.NONE);
 		massBox.setLayoutData(insertGD);
+		
+		Label massUnit = new Label(starInsertPage, SWT.FILL);
+		insertGD.horizontalSpan = 1;
+		massUnit.setText("kg");
+		massUnit.setLayoutData(insertGD);
 
 		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		Label classText = new Label(starInsertPage, SWT.FILL);
@@ -145,15 +150,10 @@ public class InsertStarPage {
 					error = true;
 				}
 				if (!error) {
-					System.out.println("INSERT INTO Star VALUE(\""
-							+ nameBox.getText() + "\","
-							+ massBox.getText() + ",\""
-							+ classBox.getText() + "\",\""
-							+ galaxySelect.getText() + "\");");
 					try {
 						PreparedStatement insertNewPlanet = conn
 								.prepareStatement("INSERT INTO Star VALUE(\""
-										+ nameBox.getText() + "\","
+										+ WordUtils.capitalize(nameBox.getText()) + "\","
 										+ massBox.getText() + ",\""
 										+ classBox.getText() + "\",\""
 										+ galaxySelect.getText() + "\");");
