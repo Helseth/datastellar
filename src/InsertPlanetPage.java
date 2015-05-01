@@ -24,6 +24,8 @@ public class InsertPlanetPage {
 		Composite planetInsertPage = new Composite(parent, SWT.NONE);
 		// planetInsertPage.setBackground(new Color(Display.getCurrent(), 255,
 		// 0, 0));
+		
+		//Same stuff as before
 		GridLayout insertGL = new GridLayout(4, true);
 
 		GridData insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -33,6 +35,8 @@ public class InsertPlanetPage {
 		name.setText("Name:");
 		name.setLayoutData(insertGD);
 
+		//Text is an editable textbox, you can set it to read-only by replacing the SWT.NONE in the contructor, but this is how
+		// users will enter data to insert in the DB
 		insertGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		insertGD.horizontalSpan = 1;
 		Text nameBox = new Text(planetInsertPage, SWT.NONE);
@@ -112,6 +116,7 @@ public class InsertPlanetPage {
 		errorText.setText("");
 		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
+		//This sets the color of the error text label to red
 		errorText.setForeground(Display.getCurrent().getSystemColor(
 				SWT.COLOR_RED));
 
@@ -129,6 +134,9 @@ public class InsertPlanetPage {
 		refresh.pack();
 		refresh.setLayoutData(insertGD);
 
+		// Now that all the widgets are made, we want to populate the "Orbits Star" and "In Galaxy" menus with
+		// values that are actually in the DB, easier to do this than check if a custom entered one is in the DB,
+		// and if it wasn't we would have to create an INSERT statement for that.
 		try {
 			PreparedStatement getStarNames = conn
 					.prepareStatement("SELECT DISTINCT name FROM star;");
@@ -162,9 +170,11 @@ public class InsertPlanetPage {
 			e.printStackTrace();
 		}
 
+		//Listener for the submit button, the event type is SWT.Selection, NOT SWT.PUSH
 		submit.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				boolean error = false;
+				// Just some basic error checking before we make the SQL statement
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
 					errorText.setVisible(true);
@@ -220,6 +230,7 @@ public class InsertPlanetPage {
 					error = true;
 				}
 				if (!error) {
+					//Now for the actual SQL statement construction
 					try {
 						PreparedStatement insertNewPlanet = conn
 								.prepareStatement("INSERT INTO Planet VALUE(\""
@@ -229,6 +240,7 @@ public class InsertPlanetPage {
 										+ periodBox.getText() + ","
 										+ popBox.getText() + ",\""
 										+ galaxySelect.getText() + "\");");
+						//This sends it to the server
 						insertNewPlanet.execute();
 						System.out.println("Inserting " + nameBox.getText());
 
@@ -241,6 +253,8 @@ public class InsertPlanetPage {
 			}
 		});
 		
+		// This is for the refresh button, when pushed we want it to re-query the server for any possible stars
+		// or galaxies added. The composites DO NOT refresh on their own.
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				try {
@@ -254,7 +268,9 @@ public class InsertPlanetPage {
 							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
 					getGalaxyNames.execute();
 					
+					// Removes all of the options from the starSelect Combo
 					starSelect.removeAll();
+					//Now we add a fresh list back in
 					while (rs.next()) {
 						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 							String columnValue = rs.getString(i);
@@ -265,6 +281,7 @@ public class InsertPlanetPage {
 					rs = getGalaxyNames.getResultSet();
 					rsmd = rs.getMetaData();
 					
+					// Do the same for the galaxy list
 					galaxySelect.removeAll();
 					while (rs.next()) {
 						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
@@ -280,6 +297,7 @@ public class InsertPlanetPage {
 			}
 		});
 
+		//Tell the composite to use that layout and its widget children
 		planetInsertPage.setLayout(insertGL);
 		return planetInsertPage;
 	}

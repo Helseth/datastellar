@@ -41,6 +41,7 @@ public class InsertPage {
 		StackLayout sl = new StackLayout();
 		sharedComposite.setLayout(sl);
 
+		//Here we are querying the DB for the names of all the tables
 		try {
 			PreparedStatement getTableNames = conn
 					.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema='datastellar';");
@@ -51,6 +52,7 @@ public class InsertPage {
 			while (rs.next()) {
 				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 					String columnValue = rs.getString(i);
+					// This inserts the names of the tables into the drop-down menu
 					insertTableSelect.add(WordUtils.capitalize(columnValue));
 				}
 			}
@@ -60,6 +62,13 @@ public class InsertPage {
 			e.printStackTrace();
 		}
 
+		//These are composites specifically made for each data type, when a different table name is
+		// selected in the drop-down menu these are what will get swapped out in the "Shared Composite"
+		// For creating the composites we want to pass the server connection (conn) into the page
+		// The .java files don't actually store any class info, just used to separate code cleanly
+		// Make sure when making new ones to make them static so we can access them without having to make
+		// new objects.
+		// TODO Still needs one for Species and Inhabits
 		Composite planetPage = InsertPlanetPage.createPlanetPage(sharedComposite, conn);
 		Composite starPage = InsertStarPage.createStarPage(sharedComposite, conn);
 		Composite galaxyPage = InsertGalaxyPage.createGalaxyPage(sharedComposite, conn);
@@ -69,6 +78,8 @@ public class InsertPage {
 			@Override
 			public void handleEvent(Event e) {
 				if (insertTableSelect.getText().equalsIgnoreCase("Planet")) {
+					// Swaps in the planet page
+					// For more comments see the InsertPlanetPage.java
 					sl.topControl = planetPage;
 					sharedComposite.layout();
 				}
