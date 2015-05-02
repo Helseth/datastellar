@@ -64,9 +64,11 @@ public class UpdatePage {
 		// Only thing slightly different is that we have an additional layer of composites here, one for the object type, and one for the
 		// actual object
 		Composite planetPage = UpdateSelectPlanetPage.createSelectUpdatePage(sharedComposite, conn);
-		//Composite starPage = InsertStarPage.createStarPage(sharedComposite, conn);
-		//Composite galaxyPage = InsertGalaxyPage.createGalaxyPage(sharedComposite, conn);
-		//Composite moonPage = InsertMoonPage.createMoonPage(sharedComposite, conn);
+		Composite starPage = UpdateSelectStarPage.createSelectUpdatePage(sharedComposite, conn);
+		Composite galaxyPage = UpdateSelectGalaxyPage.createSelectUpdatePage(sharedComposite, conn);
+		Composite moonPage = UpdateSelectMoonPage.createSelectUpdatePage(sharedComposite, conn);
+		Composite speciesPage = UpdateSelectSpeciesPage.createSelectUpdatePage(sharedComposite, conn);
+		//Composite inhabitsPage = UpdateSelectInhabitsPage.createSelectUpdatePage(sharedComposite, conn);
 
 		updateTableSelect.addListener(SWT.Selection, new Listener() {
 			@Override
@@ -77,6 +79,28 @@ public class UpdatePage {
 					sl.topControl = planetPage;
 					sharedComposite.layout();
 				}
+				if (updateTableSelect.getText().equalsIgnoreCase("Galaxy")) {
+					sl.topControl = galaxyPage;
+					sharedComposite.layout();
+				}
+				if (updateTableSelect.getText().equalsIgnoreCase("Star")) {
+					sl.topControl = starPage;
+					sharedComposite.layout();
+				}
+				if (updateTableSelect.getText().equalsIgnoreCase("Moon")) {
+					sl.topControl = moonPage;
+					sharedComposite.layout();
+				}
+				if (updateTableSelect.getText().equalsIgnoreCase("Species")) {
+					sl.topControl = speciesPage;
+					sharedComposite.layout();
+				}
+				/*
+				if (updateTableSelect.getText().equalsIgnoreCase("Inhabits")) {
+					sl.topControl = inhabitsPage;
+					sharedComposite.layout();
+				}
+				*/
 			}});
 
 		updatePage.setLayout(updateGL);
