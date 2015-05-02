@@ -107,7 +107,6 @@ public class InsertPage {
 				}
 			}
 		});
-
 		insertPage.setLayout(insertGL);
 		return insertPage;
 	}
