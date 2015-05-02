@@ -76,6 +76,7 @@ public class InsertPage {
 		Composite speciesPage = InsertSpeciesPage.createSpeciesPage(sharedComposite, conn);
 		Composite inhabitsPage = InsertInhabitsPage.createInhabitsPage(sharedComposite, conn);
 
+
 		insertTableSelect.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
