@@ -239,7 +239,7 @@ public class UpdateSpeciesPage {
 					String name = nameBox.getText();
 					updateSpeciesSelect.removeAll();
 					PreparedStatement getTableNames = conn
-							.prepareStatement("SELECT name FROM species;");
+							.prepareStatement("SELECT name FROM species ORDER BY name;");
 					getTableNames.execute();
 					ResultSet rs = getTableNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
