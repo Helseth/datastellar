@@ -48,7 +48,7 @@ public class UpdateSelectStarPage {
 		//Just get all the names of the planets
 		try {
 			PreparedStatement getTableNames = conn
-					.prepareStatement("SELECT name FROM star;");
+					.prepareStatement("SELECT name FROM star ORDER BY name;");
 			getTableNames.execute();
 			ResultSet rs = getTableNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
