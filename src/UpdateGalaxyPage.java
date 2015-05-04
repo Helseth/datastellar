@@ -205,7 +205,7 @@ public class UpdateGalaxyPage {
 					String name = nameBox.getText();
 					updateGalaxySelect.removeAll();
 					PreparedStatement getTableNames = conn
-							.prepareStatement("SELECT name FROM galaxy;");
+							.prepareStatement("SELECT name FROM galaxy ORDER BY name;");
 					getTableNames.execute();
 					ResultSet rs = getTableNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
