@@ -115,6 +115,7 @@ public class InsertGalaxyPage {
 					error = true;
 				}
 				if (!error) {
+					errorText.setVisible(false);
 					try {
 						PreparedStatement insertNewPlanet = conn
 								.prepareStatement("INSERT INTO Galaxy VALUE(\""

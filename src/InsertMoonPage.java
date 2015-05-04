@@ -120,13 +120,13 @@ public class InsertMoonPage {
 
 		try {
 			PreparedStatement getPlanetNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM planet;");
+					.prepareStatement("SELECT DISTINCT name FROM planet ORDER BY name;");
 			getPlanetNames.execute();
 			ResultSet rs = getPlanetNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			PreparedStatement getGalaxyNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 			getGalaxyNames.execute();
 
 			while (rs.next()) {
@@ -196,10 +196,11 @@ public class InsertMoonPage {
 					error = true;
 				}
 				if (!error) {
+					errorText.setVisible(false);
 					try {
 						PreparedStatement insertNewPlanet = conn
 								.prepareStatement("INSERT INTO moon VALUE(\""
-							+ WordUtils.capitalize(nameBox.getText()) + "," + massBox.getText()
+							+ WordUtils.capitalize(nameBox.getText()) + "\"," + massBox.getText()
 							+ ",\"" + planetSelect.getText() + "\","
 							+ periodBox.getText() + ",\"" + galaxySelect.getText() + "\");");
 						insertNewPlanet.execute();
@@ -207,7 +208,10 @@ public class InsertMoonPage {
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						if(e.getMessage().contains("Duplicate")){
+							errorText.setText("Entry already exists in database.");
+							errorText.setVisible(true);
+						}
 					}
 				}
 
@@ -218,13 +222,13 @@ public class InsertMoonPage {
 			public void handleEvent(Event event) {
 				try {
 					PreparedStatement getPlanetNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM planet;");
+							.prepareStatement("SELECT DISTINCT name FROM planet ORDER BY name;");
 					getPlanetNames.execute();
 					ResultSet rs = getPlanetNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
 
 					PreparedStatement getGalaxyNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 					getGalaxyNames.execute();
 					
 					planetSelect.removeAll();

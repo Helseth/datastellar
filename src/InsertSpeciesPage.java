@@ -152,6 +152,7 @@ public class InsertSpeciesPage {
 
 				}
 				if (!error) {
+					errorText.setVisible(false);
 					//Now for the actual SQL statement construction
 					try {
 						PreparedStatement insertNewSpecies = conn
@@ -166,7 +167,10 @@ public class InsertSpeciesPage {
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						if(e.getMessage().contains("Duplicate")){
+							errorText.setText("Entry already exists in database.");
+							errorText.setVisible(true);
+						}
 					}
 				}
 

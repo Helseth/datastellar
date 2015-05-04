@@ -44,7 +44,7 @@ public class UpdatePage {
 
 		try {
 			PreparedStatement getTableNames = conn
-					.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema='datastellar';");
+					.prepareStatement("SELECT table_name FROM information_schema.tables WHERE table_schema='datastellar' AND NOT table_name = 'Inhabits';");
 			getTableNames.execute();
 			ResultSet rs = getTableNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();

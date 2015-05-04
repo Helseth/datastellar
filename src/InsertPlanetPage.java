@@ -139,13 +139,13 @@ public class InsertPlanetPage {
 		// and if it wasn't we would have to create an INSERT statement for that.
 		try {
 			PreparedStatement getStarNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM star;");
+					.prepareStatement("SELECT DISTINCT name FROM star ORDER BY name;");
 			getStarNames.execute();
 			ResultSet rs = getStarNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			PreparedStatement getGalaxyNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 			getGalaxyNames.execute();
 
 			while (rs.next()) {
@@ -230,6 +230,7 @@ public class InsertPlanetPage {
 					error = true;
 				}
 				if (!error) {
+					errorText.setVisible(false);
 					//Now for the actual SQL statement construction
 					try {
 						PreparedStatement insertNewPlanet = conn
@@ -245,9 +246,12 @@ public class InsertPlanetPage {
 						System.out.println("Inserting " + nameBox.getText());
 
 					} catch (SQLException e) {
-						System.out.println("SQL Error");
-						e.printStackTrace();
-					}
+								System.out.println("SQL Error");
+								if(e.getMessage().contains("Duplicate")){
+									errorText.setText("Entry already exists in database.");
+									errorText.setVisible(true);
+								}
+							}
 				}
 
 			}
@@ -259,13 +263,13 @@ public class InsertPlanetPage {
 			public void handleEvent(Event event) {
 				try {
 					PreparedStatement getStarNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM star;");
+							.prepareStatement("SELECT DISTINCT name FROM star ORDER BY name;");
 					getStarNames.execute();
 					ResultSet rs = getStarNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
 
 					PreparedStatement getGalaxyNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 					getGalaxyNames.execute();
 					
 					// Removes all of the options from the starSelect Combo

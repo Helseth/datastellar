@@ -103,7 +103,7 @@ public class InsertStarPage {
 		try {
 
 			PreparedStatement getGalaxyNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 			getGalaxyNames.execute();
 			ResultSet rs = getGalaxyNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -150,6 +150,7 @@ public class InsertStarPage {
 					error = true;
 				}
 				if (!error) {
+					errorText.setVisible(false);
 					try {
 						PreparedStatement insertNewPlanet = conn
 								.prepareStatement("INSERT INTO Star VALUE(\""
@@ -176,7 +177,7 @@ public class InsertStarPage {
 			public void handleEvent(Event event) {
 				try {
 					PreparedStatement getGalaxyNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 					getGalaxyNames.execute();
 					
 					ResultSet rs = getGalaxyNames.getResultSet();

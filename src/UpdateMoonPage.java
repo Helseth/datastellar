@@ -124,13 +124,13 @@ public class UpdateMoonPage {
 
 		try {
 			PreparedStatement getPlanetNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM planet;");
+					.prepareStatement("SELECT DISTINCT name FROM planet ORDER BY name;");
 			getPlanetNames.execute();
 			ResultSet rs = getPlanetNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			PreparedStatement getGalaxyNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 			getGalaxyNames.execute();
 
 			while (rs.next()) {
@@ -249,13 +249,13 @@ public class UpdateMoonPage {
 				try {
 					// Same as other refresh buttons, just force it to do an extra few steps
 					PreparedStatement getPlanetNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM planet;");
+							.prepareStatement("SELECT DISTINCT name FROM planet ORDER BY name;");
 					getPlanetNames.execute();
 					ResultSet rs = getPlanetNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
 
 					PreparedStatement getGalaxyNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 					getGalaxyNames.execute();
 
 					planetSelect.removeAll();
@@ -327,7 +327,7 @@ public class UpdateMoonPage {
 					String name = nameBox.getText();
 					updateMoonSelect.removeAll();
 					PreparedStatement getTableNames = conn
-							.prepareStatement("SELECT name FROM moon;");
+							.prepareStatement("SELECT name FROM moon ORDER BY name;");
 					getTableNames.execute();
 					ResultSet rs = getTableNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
