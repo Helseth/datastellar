@@ -107,7 +107,7 @@ public class UpdateStarPage {
 		try {
 
 			PreparedStatement getGalaxyNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+					.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 			getGalaxyNames.execute();
 			ResultSet rs = getGalaxyNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -202,7 +202,7 @@ public class UpdateStarPage {
 					// Same as other refresh buttons, just force it to do an extra few steps
 
 					PreparedStatement getGalaxyNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM galaxy;");
+							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
 					getGalaxyNames.execute();
 
 					ResultSet rs = getGalaxyNames.getResultSet();
@@ -260,7 +260,7 @@ public class UpdateStarPage {
 					String name = nameBox.getText();
 					updateStarSelect.removeAll();
 					PreparedStatement getTableNames = conn
-							.prepareStatement("SELECT name FROM star;");
+							.prepareStatement("SELECT name FROM star ORDER BY name;");
 					getTableNames.execute();
 					ResultSet rs = getTableNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
