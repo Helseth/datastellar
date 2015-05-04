@@ -85,13 +85,13 @@ public class InsertInhabitsPage {
 		// and if it wasn't we would have to create an INSERT statement for that.
 		try {
 			PreparedStatement getSpeciesNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM Species;");
+					.prepareStatement("SELECT DISTINCT name FROM Species ORDER BY name;");
 			getSpeciesNames.execute();
 			ResultSet rs = getSpeciesNames.getResultSet();
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			PreparedStatement getPlanetNames = conn
-					.prepareStatement("SELECT DISTINCT name FROM Planet;");
+					.prepareStatement("SELECT DISTINCT name FROM Planet ORDER BY name;");
 			getPlanetNames.execute();
 
 			while (rs.next()) {
@@ -133,6 +133,7 @@ public class InsertInhabitsPage {
 					error = true;
 				}
 				if (!error) {
+					errorText.setVisible(false);
 					//Now for the actual SQL statement construction
 					try {
 						PreparedStatement insertNewPlanet = conn
@@ -145,7 +146,10 @@ public class InsertInhabitsPage {
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						if(e.getMessage().contains("Duplicate")){
+							errorText.setText("Entry already exists in database.");
+							errorText.setVisible(true);
+						}
 					}
 				}
 
@@ -158,13 +162,13 @@ public class InsertInhabitsPage {
 			public void handleEvent(Event event) {
 				try {
 					PreparedStatement getSpeciesNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM Species;");
+							.prepareStatement("SELECT DISTINCT name FROM Species ORDER BY name;");
 					getSpeciesNames.execute();
 					ResultSet rs = getSpeciesNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
 
 					PreparedStatement getPlanetNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM Planet;");
+							.prepareStatement("SELECT DISTINCT name FROM Planet ORDER BY name;");
 					getPlanetNames.execute();
 					
 					// Removes all of the options from the starSelect Combo
