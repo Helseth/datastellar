@@ -57,6 +57,7 @@ public class MainWindow {
 		Composite insertPage = InsertPage.createInsertPage(sharedComposite, conn);
 		Composite updatePage = UpdatePage.createUpdatePage(sharedComposite, conn);
 		Composite deletePage = DeletePage.createDeletePage(sharedComposite, conn);
+		Composite queryPage = QueryPage.createQueryPage(sharedComposite, conn);
 		
 		// This tells the shell that we want it to use everything in the passed in layout, in this case the grid with all children
 		shell.setLayout(gl);
@@ -85,6 +86,12 @@ public class MainWindow {
 					//Does the same as above but for the update page
 					// For update comments see Update.java
 					sl.topControl = deletePage;
+					sharedComposite.layout();
+				}
+				if (actionSelect.getText().equalsIgnoreCase("Query")) {
+					//Does the same as above but for the update page
+					// For update comments see Update.java
+					sl.topControl = queryPage;
 					sharedComposite.layout();
 				}
 				//TODO Add actions for Delete and Query
