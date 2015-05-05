@@ -69,12 +69,13 @@ public class QueryPage {
 		// Make sure when making new ones to make them static so we can access them without having to make
 		// new objects.
 		// TODO Still needs one for Species and Inhabits
-		Composite planetPage = InsertPlanetPage.createPlanetPage(sharedComposite, conn);
-		Composite starPage = InsertStarPage.createStarPage(sharedComposite, conn);
+		Composite planetPage = QueryPlanetPage.createPlanetPage(sharedComposite, conn);
+		Composite starPage = QueryStarPage.createStarPage(sharedComposite, conn);
 		Composite galaxyPage = QueryGalaxyPage.createGalaxyPage(sharedComposite, conn);
-		Composite moonPage = InsertMoonPage.createMoonPage(sharedComposite, conn);
-		Composite speciesPage = InsertSpeciesPage.createSpeciesPage(sharedComposite, conn);
-		Composite inhabitsPage = InsertInhabitsPage.createInhabitsPage(sharedComposite, conn);
+		Composite moonPage = QueryMoonPage.createMoonPage(sharedComposite, conn);
+		Composite speciesPage = QuerySpeciesPage.createSpeciesPage(sharedComposite, conn);
+		queryTableSelect.remove("Inhabits");
+		//Composite inhabitsPage = InsertInhabitsPage.createInhabitsPage(sharedComposite, conn);
 
 
 		queryTableSelect.addListener(SWT.Selection, new Listener() {
@@ -100,10 +101,6 @@ public class QueryPage {
 				}
 				if (queryTableSelect.getText().equalsIgnoreCase("Species")) {
 					sl.topControl = speciesPage;
-					sharedComposite.layout();
-				}
-				if (queryTableSelect.getText().equalsIgnoreCase("Inhabits")) {
-					sl.topControl = inhabitsPage;
 					sharedComposite.layout();
 				}
 			}
