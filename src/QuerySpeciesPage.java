@@ -130,7 +130,7 @@ public class QuerySpeciesPage {
 
 					queryGD = new GridData(SWT.FILL, SWT.CENTER, true, false);
 					Label result = new Label(shell, SWT.FILL);
-					result.setText(WordUtils.capitalize(rsmd.getColumnLabel(i))
+					result.setText(WordUtils.capitalize(rsmd.getColumnLabel(i).replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2"))
 							+ ":");
 					result.setLayoutData(queryGD);
 
