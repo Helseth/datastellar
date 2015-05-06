@@ -87,8 +87,7 @@ public class UpdateStarPage {
 		errorText.setText("");
 		errorText.setLayoutData(updateGD);
 		errorText.setVisible(false);
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(starUpdatePage, SWT.PUSH);
@@ -124,7 +123,7 @@ public class UpdateStarPage {
 
 		} catch (SQLException e) {
 			System.out.println("SQL Error");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 		// Here is where we query the DB for the planet's info
@@ -141,25 +140,37 @@ public class UpdateStarPage {
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
 					errorText.setVisible(true);
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					error = true;
+					return;
 				}
 				if (!NumberUtils.isNumber(massBox.getText())) {
 					errorText.setText("Mass must be a number.");
 					errorText.setVisible(true);
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(massBox.getText())) {
 					if (Integer.parseInt(massBox.getText()) <= 0) {
 						errorText.setText("Mass must be > 0.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (galaxySelect.getText().equals("")) {
 					errorText.setText("You must select a Galaxy.");
 					errorText.setVisible(true);
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					error = true;
+					return;
 				}
 				if (!error) {
 					// Now that all the data is good send UPDATE statement to the sever
@@ -184,10 +195,16 @@ public class UpdateStarPage {
 						disableFKCheck = conn
 								.prepareStatement("SET foreign_key_checks = 1;");
 						disableFKCheck.execute();
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_BLACK));
+						errorText
+								.setText(nameBox.getText() + " successfully inserted.");
+						errorText.setVisible(true);
+						return;
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 				// Now we want to refesh the planets drop-down with the new name (if they changed it)
@@ -198,6 +215,7 @@ public class UpdateStarPage {
 
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				errorText.setVisible(false);
 				try {
 					// Same as other refresh buttons, just force it to do an extra few steps
 

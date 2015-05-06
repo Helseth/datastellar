@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -16,7 +15,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 
 
 public class InsertInhabitsPage {
@@ -61,10 +59,7 @@ public class InsertInhabitsPage {
 		insertGD.horizontalSpan = 4;
 		errorText.setText("");
 		errorText.setLayoutData(insertGD);
-		errorText.setVisible(false);
-		//This sets the color of the error text label to red
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		errorText.setVisible(false);		
 
 		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(inhabitsInsertPage, SWT.PUSH);
@@ -123,11 +118,15 @@ public class InsertInhabitsPage {
 				// Just some basic error checking before we make the SQL statement
 				
 				if (speciesSelect.getText().equals("")) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("You must select a Species.");
 					errorText.setVisible(true);
 					error = true;
 				}
 				if (planetSelect.getText().equals("")) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("You must select a Planet.");
 					errorText.setVisible(true);
 					error = true;
@@ -136,21 +135,30 @@ public class InsertInhabitsPage {
 					errorText.setVisible(false);
 					//Now for the actual SQL statement construction
 					try {
-						PreparedStatement insertNewPlanet = conn
+						PreparedStatement insertNewInhabits = conn
 								.prepareStatement("INSERT INTO Inhabits VALUE(\""
 										+ speciesSelect.getText() + "\",\""
 										+ planetSelect.getText() + "\");");
 						//This sends it to the server
-						insertNewPlanet.execute();
-						System.out.println("Inserting " + speciesSelect.getText() + " inhabits " + planetSelect.getText());
+						insertNewInhabits.execute();
+						//ystem.out.println("Inserting " + speciesSelect.getText() + " inhabits " + planetSelect.getText());
 
 					} catch (SQLException e) {
-						System.out.println("SQL Error");
+						//System.out.println("SQL Error");
 						if(e.getMessage().contains("Duplicate")){
+							errorText.setForeground(Display.getCurrent().getSystemColor(
+									SWT.COLOR_RED));
 							errorText.setText("Entry already exists in database.");
 							errorText.setVisible(true);
+							return;
 						}
 					}
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_BLACK));
+					errorText
+							.setText(speciesSelect.getText() + "-" + planetSelect.getText() + " successfully inserted.");
+					errorText.setVisible(true);
+					return;
 				}
 
 			}
@@ -160,6 +168,7 @@ public class InsertInhabitsPage {
 		// or galaxies added. The composites DO NOT refresh on their own.
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				errorText.setVisible(false);
 				try {
 					PreparedStatement getSpeciesNames = conn
 							.prepareStatement("SELECT DISTINCT name FROM Species ORDER BY name;");
@@ -194,7 +203,7 @@ public class InsertInhabitsPage {
 					}
 
 				} catch (SQLException e) {
-					System.out.println("SQL Error");
+					System.out.println("Inhabits insertion refresh SQL error.");
 					e.printStackTrace();
 				}
 			}

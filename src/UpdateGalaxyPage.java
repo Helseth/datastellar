@@ -82,8 +82,7 @@ public class UpdateGalaxyPage {
 		errorText.setText("");
 		errorText.setLayoutData(updateGD);
 		errorText.setVisible(false);
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(galaxyUpdatePage, SWT.PUSH);
@@ -111,26 +110,38 @@ public class UpdateGalaxyPage {
 				boolean error = false;
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!NumberUtils.isNumber(diameterBox.getText())) {
 					errorText.setText("Diameter must be a number.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(diameterBox.getText())) {
 					if (Integer.parseInt(diameterBox.getText()) <= 0) {
 						errorText.setText("Diameter must be > 0.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if(galaxyShape.getText().equals("")){
 					errorText.setText("You must select a shape.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 
 				if (!error) {
@@ -150,15 +161,22 @@ public class UpdateGalaxyPage {
 										+ galaxyShape.getText() + "\" WHERE "
 										+ "name=\"" + galaxyName + "\";");
 						updateGalaxy.execute();
-						System.out.println("Updating " + nameBox.getText());
+						//System.out.println("Updating " + nameBox.getText());
 						// Turn foreign key checks back on
 						disableFKCheck = conn
 								.prepareStatement("SET foreign_key_checks = 1;");
 						disableFKCheck.execute();
+						
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_BLACK));
+						errorText
+								.setText(nameBox.getText() + " successfully updated.");
+						errorText.setVisible(true);
+						return;
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 
@@ -167,6 +185,7 @@ public class UpdateGalaxyPage {
 
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				errorText.setVisible(false);
 					try {
 						PreparedStatement getTableNames = conn
 								.prepareStatement("SELECT * FROM galaxy WHERE name='"
@@ -196,7 +215,7 @@ public class UpdateGalaxyPage {
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 
 
@@ -222,7 +241,7 @@ public class UpdateGalaxyPage {
 
 				} catch (SQLException e) {
 					System.out.println("SQL Error");
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 
 			}
@@ -263,7 +282,7 @@ public class UpdateGalaxyPage {
 
 		} catch (SQLException e) {
 			System.out.println("SQL Error");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }

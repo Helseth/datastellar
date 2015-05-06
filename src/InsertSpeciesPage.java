@@ -1,7 +1,5 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -10,7 +8,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -85,8 +82,7 @@ public class InsertSpeciesPage {
 		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
 		//This sets the color of the error text label to red
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(speciesInsertPage, SWT.PUSH);
@@ -109,45 +105,66 @@ public class InsertSpeciesPage {
 				// Just some basic error checking before we make the SQL statement
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!NumberUtils.isNumber(heightBox.getText())) {
 					errorText.setText("Height must be a number.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(heightBox.getText())) {
 					if (Integer.parseInt(heightBox.getText()) <= 0) {
 						errorText.setText("Height must be > 0.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (!NumberUtils.isNumber(numberLivingBox.getText())) {
 					errorText.setText("Number Living must be a number.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(numberLivingBox.getText())) {
 					if (Integer.parseInt(numberLivingBox.getText()) < 0) {
 						errorText.setText("Number Living must be >= 0.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (!NumberUtils.isNumber(hostilityBox.getText())) {
 					errorText.setText("Hostility must be a number.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(hostilityBox.getText())) {
 					if (Long.parseLong(hostilityBox.getText()) < 1 || Long.parseLong(hostilityBox.getText()) > 10) {
 						errorText.setText("Hostility must be a value in the range 1 to 10.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
@@ -163,15 +180,24 @@ public class InsertSpeciesPage {
 										+ hostilityBox.getText() + ");");
 						//This sends it to the server
 						insertNewSpecies.execute();
-						System.out.println("Inserting " + nameBox.getText());
+						//System.out.println("Inserting " + nameBox.getText());
 
 					} catch (SQLException e) {
-						System.out.println("SQL Error");
+						//System.out.println("SQL Error");
 						if(e.getMessage().contains("Duplicate")){
 							errorText.setText("Entry already exists in database.");
+							errorText.setForeground(Display.getCurrent().getSystemColor(
+									SWT.COLOR_RED));
 							errorText.setVisible(true);
+							return;
 						}
 					}
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_BLACK));
+					errorText
+							.setText(nameBox.getText() + " successfully inserted.");
+					errorText.setVisible(true);
+					return;
 				}
 
 			}

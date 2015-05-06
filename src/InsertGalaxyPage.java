@@ -1,7 +1,5 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -78,8 +76,7 @@ public class InsertGalaxyPage {
 		errorText.setText("");
 		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(galaxyInsertPage, SWT.PUSH);
@@ -93,16 +90,22 @@ public class InsertGalaxyPage {
 				boolean error = false;
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
 				}
 				if (!NumberUtils.isNumber(diameterBox.getText())) {
 					errorText.setText("Diameter must be a number.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
 				}
 				if (NumberUtils.isNumber(diameterBox.getText())) {
 					if (Integer.parseInt(diameterBox.getText()) <= 0) {
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setText("Diameter must be > 0.");
 						errorText.setVisible(true);
 						error = true;
@@ -110,6 +113,8 @@ public class InsertGalaxyPage {
 
 				}
 				if(galaxyShape.getText().equals("")){
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("You must select a shape.");
 					errorText.setVisible(true);
 					error = true;
@@ -123,15 +128,24 @@ public class InsertGalaxyPage {
 							galaxyShape.getText() + "\",\""
 							+ diameterBox.getText() + "\");");
 						insertNewPlanet.execute();
-						System.out.println("Inserting " + nameBox.getText());
+						//System.out.println("Inserting " + nameBox.getText());
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
 						if(e.getMessage().contains("Duplicate")){
+							errorText.setForeground(Display.getCurrent().getSystemColor(
+									SWT.COLOR_RED));
 							errorText.setText("Entry already exists in database.");
 							errorText.setVisible(true);
+							return;
 						}
 					}
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_BLACK));
+					errorText
+							.setText(nameBox.getText() + " successfully inserted.");
+					errorText.setVisible(true);
+					return;
 				}
 
 			}

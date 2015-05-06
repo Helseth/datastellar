@@ -38,7 +38,7 @@ public class UpdateSelectPlanetPage {
 		updateGD.horizontalSpan = 2;
 		updatePlanetSelect.setLayoutData(updateGD);
 		
-		Composite sharedComposite = new Composite(updatePage, SWT.BORDER);
+		Composite sharedComposite = new Composite(updatePage, SWT.NONE);
 		updateGD = new GridData(SWT.FILL, SWT.FILL, true, true);
 		updateGD.horizontalSpan = 4;
 		sharedComposite.setLayoutData(updateGD);

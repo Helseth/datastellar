@@ -3,9 +3,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 public class Database{
 	
 	static final String url = "jdbc:mysql://localhost:3306/datastellar";
@@ -18,6 +15,7 @@ public class Database{
 		"('name', mass, 'orbits-planet', orbital-period, 'in-galaxy')",
 		"('name', height, number-living, hostility)", "('species-name', 'planet-name')"};
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args){
 		Connection conn = null;
 		//Statement stmt = null;

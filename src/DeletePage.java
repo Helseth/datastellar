@@ -69,12 +69,12 @@ public class DeletePage {
 		// Make sure when making new ones to make them static so we can access them without having to make
 		// new objects.
 		// TODO Still needs one for Species and Inhabits
-		Composite planetPage = InsertPlanetPage.createPlanetPage(sharedComposite, conn);
-		Composite starPage = InsertStarPage.createStarPage(sharedComposite, conn);
+		Composite planetPage = DeletePlanetPage.createPlanetPage(sharedComposite, conn);
+		Composite starPage = DeleteStarPage.createStarPage(sharedComposite, conn);
 		Composite galaxyPage = DeleteGalaxyPage.createGalaxyPage(sharedComposite, conn);
-		Composite moonPage = InsertMoonPage.createMoonPage(sharedComposite, conn);
-		Composite speciesPage = InsertSpeciesPage.createSpeciesPage(sharedComposite, conn);
-		Composite inhabitsPage = InsertInhabitsPage.createInhabitsPage(sharedComposite, conn);
+		Composite moonPage = DeleteMoonPage.createMoonPage(sharedComposite, conn);
+		Composite speciesPage = DeleteSpeciesPage.createSpeciesPage(sharedComposite, conn);
+		Composite inhabitsPage = DeleteInhabitsPage.createInhabitsPage(sharedComposite, conn);
 
 
 		deleteTableSelect.addListener(SWT.Selection, new Listener() {

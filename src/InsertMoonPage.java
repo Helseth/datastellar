@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -90,8 +92,7 @@ public class InsertMoonPage {
 		inGalaxy.setLayoutData(insertGD);
 
 		insertGD = new GridData(SWT.FILL, SWT.CENTER, false, false);
-		Combo galaxySelect = new Combo(moonInsertPage, SWT.DROP_DOWN
-				| SWT.READ_ONLY);
+		Text galaxySelect = new Text(moonInsertPage, SWT.READ_ONLY);
 		insertGD.horizontalSpan = 2;
 		galaxySelect.setLayoutData(insertGD);
 
@@ -101,8 +102,7 @@ public class InsertMoonPage {
 		errorText.setText("");
 		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(moonInsertPage, SWT.PUSH);
@@ -136,64 +136,108 @@ public class InsertMoonPage {
 				}
 			}
 
-			rs = getGalaxyNames.getResultSet();
-			rsmd = rs.getMetaData();
+			planetSelect.addSelectionListener(new SelectionListener() {
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					try {
+						PreparedStatement getGalaxyName = conn
+								.prepareStatement("SELECT inGalaxy FROM planet WHERE name='" + planetSelect.getText() + "';");
+						getGalaxyName.execute();
+						ResultSet rs = getGalaxyName.getResultSet();
+						ResultSetMetaData rsmd = rs.getMetaData();
 
-			while (rs.next()) {
-				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-					String columnValue = rs.getString(i);
-					galaxySelect.add(WordUtils.capitalize(columnValue));
+						while (rs.next()) {
+							for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+								String columnValue = rs.getString(i);
+								galaxySelect.setText(columnValue);
+							}
+						}
+
+
+					} catch (SQLException e2) {
+						System.out.println("Moon insert inGalaxy SQL error");
+						//e.printStackTrace();
+					}
+					
 				}
-			}
+				
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 
 		} catch (SQLException e) {
-			System.out.println("SQL Error");
-			e.printStackTrace();
+			System.out.println("Moon insert refresh SQL error.");
+			//e.printStackTrace();
 		}
 
 		submit.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				boolean error = false;
 				if (nameBox.getText().equals("")) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("Name must not be empty.");
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!NumberUtils.isNumber(massBox.getText())) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("Mass must be a number.");
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(massBox.getText())) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					if (Integer.parseInt(massBox.getText()) <= 0) {
 						errorText.setText("Mass must be > 0.");
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (planetSelect.getText().equals("")) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("You must select a Planet to orbit.");
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(periodBox.getText())) {
 					if (Integer.parseInt(periodBox.getText()) <= 0) {
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setText("Orbital Period must be > 0.");
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (!NumberUtils.isNumber(periodBox.getText())) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("Orbital Period must be a number.");
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (galaxySelect.getText().equals("")) {
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setText("You must select a Galaxy.");
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!error) {
 					errorText.setVisible(false);
@@ -207,12 +251,21 @@ public class InsertMoonPage {
 						System.out.println("Inserting " + nameBox.getText());
 
 					} catch (SQLException e) {
-						System.out.println("SQL Error");
+						//System.out.println("SQL Error");
 						if(e.getMessage().contains("Duplicate")){
+							errorText.setForeground(Display.getCurrent().getSystemColor(
+									SWT.COLOR_RED));
 							errorText.setText("Entry already exists in database.");
 							errorText.setVisible(true);
+							return;
 						}
 					}
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_BLACK));
+					errorText
+							.setText(nameBox.getText() + " successfully inserted.");
+					errorText.setVisible(true);
+					return;
 				}
 
 			}
@@ -220,16 +273,13 @@ public class InsertMoonPage {
 		
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				errorText.setVisible(false);
 				try {
 					PreparedStatement getPlanetNames = conn
 							.prepareStatement("SELECT DISTINCT name FROM planet ORDER BY name;");
 					getPlanetNames.execute();
 					ResultSet rs = getPlanetNames.getResultSet();
 					ResultSetMetaData rsmd = rs.getMetaData();
-
-					PreparedStatement getGalaxyNames = conn
-							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
-					getGalaxyNames.execute();
 					
 					planetSelect.removeAll();
 					while (rs.next()) {
@@ -239,19 +289,10 @@ public class InsertMoonPage {
 						}
 					}
 
-					rs = getGalaxyNames.getResultSet();
-					rsmd = rs.getMetaData();
-					
-					galaxySelect.removeAll();
-					while (rs.next()) {
-						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-							String columnValue = rs.getString(i);
-							galaxySelect.add(WordUtils.capitalize(columnValue));
-						}
-					}
+					galaxySelect.setText("");
 
 				} catch (SQLException e) {
-					System.out.println("SQL Error");
+					System.out.println("Moon insert refresh error.");
 					e.printStackTrace();
 				}
 			}

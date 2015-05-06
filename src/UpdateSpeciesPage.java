@@ -89,8 +89,7 @@ public class UpdateSpeciesPage {
 		errorText.setText("");
 		errorText.setLayoutData(updateGD);
 		errorText.setVisible(false);
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		updateGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(speciesUpdatePage, SWT.PUSH);
@@ -120,45 +119,66 @@ public class UpdateSpeciesPage {
 				// Just some basic error checking before we make the SQL statement
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!NumberUtils.isNumber(heightBox.getText())) {
 					errorText.setText("Height must be a number.");
 					errorText.setVisible(true);
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(heightBox.getText())) {
 					if (Integer.parseInt(heightBox.getText()) <= 0) {
 						errorText.setText("Height must be > 0.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (!NumberUtils.isNumber(numberLivingBox.getText())) {
 					errorText.setText("Number Living must be a number.");
 					errorText.setVisible(true);
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(numberLivingBox.getText())) {
 					if (Integer.parseInt(numberLivingBox.getText()) < 0) {
 						errorText.setText("Number Living must be >= 0.");
 						errorText.setVisible(true);
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						error = true;
+						return;
 					}
 
 				}
 				if (!NumberUtils.isNumber(hostilityBox.getText())) {
 					errorText.setText("Hostility must be a number.");
 					errorText.setVisible(true);
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(hostilityBox.getText())) {
 					if (Long.parseLong(hostilityBox.getText()) < 1 || Long.parseLong(hostilityBox.getText()) > 10) {
 						errorText.setText("Hostility must be a value in the range 1 to 10.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
@@ -185,10 +205,16 @@ public class UpdateSpeciesPage {
 						disableFKCheck = conn
 								.prepareStatement("SET foreign_key_checks = 1;");
 						disableFKCheck.execute();
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_BLACK));
+						errorText
+								.setText(nameBox.getText() + " successfully updated.");
+						errorText.setVisible(true);
+						return;
 
 					} catch (SQLException e) {
 						System.out.println("SQL Error");
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 				// Now we want to refesh the planets drop-down with the new name (if they changed it)
@@ -199,7 +225,7 @@ public class UpdateSpeciesPage {
 
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-
+				errorText.setVisible(false);
 					try {
 						PreparedStatement getTableNames = conn
 								.prepareStatement("SELECT * FROM species WHERE name='"
@@ -257,7 +283,7 @@ public class UpdateSpeciesPage {
 
 				} catch (SQLException e) {
 					System.out.println("SQL Error");
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 
 			}
@@ -301,7 +327,7 @@ public class UpdateSpeciesPage {
 
 		} catch (SQLException e) {
 			System.out.println("SQL Error");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }

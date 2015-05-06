@@ -83,8 +83,7 @@ public class InsertStarPage {
 		errorText.setText("");
 		errorText.setLayoutData(insertGD);
 		errorText.setVisible(false);
-		errorText.setForeground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_RED));
+		
 
 		insertGD = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		Button submit = new Button(starInsertPage, SWT.PUSH);
@@ -119,8 +118,8 @@ public class InsertStarPage {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("SQL Error");
-			e.printStackTrace();
+			System.out.println("Star insert SQL error");
+			//e.printStackTrace();
 		}
 
 		submit.addListener(SWT.Selection, new Listener() {
@@ -128,26 +127,38 @@ public class InsertStarPage {
 				boolean error = false;
 				if (nameBox.getText().equals("")) {
 					errorText.setText("Name must not be empty.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!NumberUtils.isNumber(massBox.getText())) {
 					errorText.setText("Mass must be a number.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (NumberUtils.isNumber(massBox.getText())) {
 					if (Integer.parseInt(massBox.getText()) <= 0) {
 						errorText.setText("Mass must be > 0.");
+						errorText.setForeground(Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
 						errorText.setVisible(true);
 						error = true;
+						return;
 					}
 
 				}
 				if (galaxySelect.getText().equals("")) {
 					errorText.setText("You must select a Galaxy.");
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_RED));
 					errorText.setVisible(true);
 					error = true;
+					return;
 				}
 				if (!error) {
 					errorText.setVisible(false);
@@ -159,15 +170,24 @@ public class InsertStarPage {
 										+ classBox.getText() + "\",\""
 										+ galaxySelect.getText() + "\");");
 						insertNewPlanet.execute();
-						System.out.println("Inserting " + nameBox.getText());
+						//System.out.println("Inserting " + nameBox.getText());
 
 					} catch (SQLException e) {
-						System.out.println("SQL Error");
+						//System.out.println("SQL Error");
 						if(e.getMessage().contains("Duplicate")){
+							errorText.setForeground(Display.getCurrent().getSystemColor(
+									SWT.COLOR_RED));
 							errorText.setText("Entry already exists in database.");
 							errorText.setVisible(true);
+							return;
 						}
 					}
+					errorText.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_BLACK));
+					errorText
+							.setText(nameBox.getText() + " successfully inserted.");
+					errorText.setVisible(true);
+					return;
 				}
 
 			}
@@ -175,6 +195,7 @@ public class InsertStarPage {
 		
 		refresh.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				errorText.setVisible(false);
 				try {
 					PreparedStatement getGalaxyNames = conn
 							.prepareStatement("SELECT DISTINCT name FROM galaxy ORDER BY name;");
@@ -193,8 +214,8 @@ public class InsertStarPage {
 					}
 
 				} catch (SQLException e) {
-					System.out.println("SQL Error");
-					e.printStackTrace();
+					System.out.println("Star insert refresh SQL error");
+					//e.printStackTrace();
 				}
 			}
 		});
